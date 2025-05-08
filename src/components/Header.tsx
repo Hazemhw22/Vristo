@@ -40,24 +40,37 @@ const Header: React.FC = () => {
       >
         <div className="flex justify-between items-center p-4 border-b">
           <span className="text-lg font-semibold">Menu</span>
-          <button onClick={() => setSidebarOpen(false)} className="text-gray-500 hover:text-red-500 transition-colors">
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="text-gray-500 hover:text-red-500 transition-colors"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
         <nav className="flex flex-col p-4 space-y-4 text-gray-700">
-          <Link to="/" onClick={() => setSidebarOpen(false)}>Home</Link>
-          <Link to="/categories" onClick={() => setSidebarOpen(false)}>Categories</Link>
-          <Link to="/favourite" onClick={() => setSidebarOpen(false)}>Favourite</Link>
-          <Link to="/stores" onClick={() => setSidebarOpen(false)}>Stores</Link>
-          <Link to="/signin" onClick={() => setSidebarOpen(false)}>Sign In</Link>
+          <Link to="/" onClick={() => setSidebarOpen(false)}>
+            Home
+          </Link>
+          <Link to="/categories" onClick={() => setSidebarOpen(false)}>
+            Categories
+          </Link>
+          <Link to="/favourite" onClick={() => setSidebarOpen(false)}>
+            Favourite
+          </Link>
+          <Link to="/stores" onClick={() => setSidebarOpen(false)}>
+            Stores
+          </Link>
+          <Link to="/signin" onClick={() => setSidebarOpen(false)}>
+            Sign In
+          </Link>
         </nav>
       </div>
 
       {/* Header */}
-      <header className="bg-white shadow-sm z-30 relative">
+      <header className="bg-white shadow-sm z-30 relative sticky top-0 w-full">
         <div className="container mx-auto px-4">
           {/* Top bar */}
-          <div className="flex justify-between items-center py-2 border-b border-gray-100">
+          <div className="flex justify-between items-center py-2  bg-blue-50">
             <div className="flex items-center text-sm">
               <MapPin className="h-4 w-4 text-blue-600" />
               <span className="ml-1">Your Location:</span>
@@ -149,7 +162,10 @@ const Header: React.FC = () => {
                     </button>
                   </div>
                 ) : (
-                  <button className="p-2 hover:text-blue-600 transition-colors" onClick={() => setSearchOpen(true)}>
+                  <button
+                    className="p-2 hover:text-blue-600 transition-colors"
+                    onClick={() => setSearchOpen(true)}
+                  >
                     <Search className="h-6 w-6" />
                   </button>
                 )}

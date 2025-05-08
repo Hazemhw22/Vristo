@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSwipeable } from "react-swipeable";
 
 interface HeroItem {
   title: string;
   subtitle: string;
   image: string;
+  bgColor: string;
 }
 
 const heroData: HeroItem[] = [
@@ -13,26 +15,66 @@ const heroData: HeroItem[] = [
     title: "iPhone 16",
     subtitle: "The Future In Your Hands",
     image: "/public/images/pngimg.com - iphone16_PNG35.png",
+    bgColor: "bg-amber-50",
   },
   {
     title: "Smart Watch",
     subtitle: "Stay Connected, Stay Smart",
     image: "/public/images/pngtree-smart-electronic-apple-watches-vector-set-png-image_5155507.png",
+    bgColor: "bg-blue-50",
   },
   {
     title: "Gaming Console",
     subtitle: "Experience Next-Gen Gaming",
     image: "/public/images/pngimg.com - sony_playstation_PNG17546.png",
+    bgColor: "bg-purple-50",
   },
 ];
 
 const Hero: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const { title, subtitle, image } = heroData[activeIndex];
+  const { title, subtitle, image, bgColor } = heroData[activeIndex];
+
+  // Swipe support
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => nextSlide(),
+    onSwipedRight: () => prevSlide(),
+    preventDefaultTouchmoveEvent: true,
+    trackMouse: true,
+  });
+
+  // Auto slide every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [activeIndex]);
+
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev + 1) % heroData.length);
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev - 1 + heroData.length) % heroData.length);
+  };
 
   return (
-    <div className="bg-amber-50 rounded-lg p-8 mb-8 overflow-hidden">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+    <motion.div
+    className={`rounded-lg p-8 mb-8 overflow-hidden transition-colors duration-500 ${bgColor}`}
+    key={bgColor}
+    initial={{ opacity: 0.8 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    whileTap={{ scale: 1.03 }}
+    whileHover={{ scale: 1.02 }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+  
+      <div
+        {...swipeHandlers}
+        className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
+      >
         <div className="flex flex-col items-start">
           <AnimatePresence mode="wait">
             <motion.h1
@@ -80,7 +122,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.5 }}
-              className="max-h-96 object-contain"
+              className="h-80 w-auto object-contain"
             />
           </AnimatePresence>
         </div>
@@ -101,7 +143,7 @@ const Hero: React.FC = () => {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

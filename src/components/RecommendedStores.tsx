@@ -12,7 +12,7 @@ interface RecommendedStoresProps {
 
 const RecommendedStores: React.FC<RecommendedStoresProps> = ({ stores }) => {
   return (
-    <div className="bg-blue-50 rounded-lg p-4 mb-6">
+    <div className="bg-blue-50 border border-blue-400 rounded-lg p-4 mb-6 shadow-sm">
       <h3 className="text-lg font-medium mb-4">Recommended Stores!</h3>
 
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
