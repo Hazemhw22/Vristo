@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-blue-50 py-10">
       <div className="container mx-auto px-4">
-        <div className="bg-white rounded-xl shadow-md p-10 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="bg-white rounded-xl shadow-md p-10 grid grid-cols-1 md:grid-cols-4 gap-20  max-w-[1280px] px-4 sm:px-6 lg:px-8 mx-auto">
           {/* العمود الأول: الشعار والنشرة */}
           <div className="flex flex-col space-y-4">
             <Logo />
@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
             <input 
   type="email" 
   placeholder="Your Email Address" 
-  className="bg-white border border-blue-200 rounded-l-md px-4 py-2 flex-grow text-sm focus:outline-none focus:border-blue-500"
+  className="bg-white border border-blue-200 rounded-l-md px-1 py-2 flex-grow text-sm focus:outline-none focus:border-blue-500"
 />
 
               <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-r-md px-4 text-sm">

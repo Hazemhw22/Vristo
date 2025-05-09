@@ -43,11 +43,11 @@ const Hero: React.FC = () => {
     trackMouse: true,
   });
 
-  // Auto slide every 5 seconds
+  // Auto slide every 10 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       nextSlide();
-    }, 5000);
+    }, 10000);
     return () => clearInterval(interval);
   }, [activeIndex]);
 

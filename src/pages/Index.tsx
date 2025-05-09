@@ -10,6 +10,7 @@ import StoreSection from "@/components/StoreSection";
 import BrandSection from "@/components/BrandSection";
 import Header from "@/components/Header";
 import { Flame } from "lucide-react";
+import SaleSection from "@/components/SaleSection";
 
 const Index = () => {
   const [sections] = useState(() => [
@@ -21,6 +22,7 @@ const Index = () => {
         image: "/images/Apple-iPhone-16-release-date-price-and-features.jpg",
       },
     },
+ 
     {
       type: "category",
       props: {
@@ -89,6 +91,16 @@ const Index = () => {
           })),
       },
     },
+    {
+      type: "sale", 
+      props: {
+        title: "When Words aren't Enough",
+        subtitle: "Say It with Gifts!",
+        image: "/public/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png", 
+        buttonText: "Shop Now",
+      },
+    },
+ 
   ]);
 
   const [recommendedStores] = useState(() =>
@@ -125,7 +137,7 @@ const Index = () => {
         {/* Center sections */}
         <div className="flex flex-col items-center space-y-6 px-4 sm:px-6 md:px-10">
           {sections.map((section, idx) => {
-            const centeredSections = ["category", "product", "store", "brand"];
+            const centeredSections = ["category", "product", "store", "brand" , "sale"];
             if (centeredSections.includes(section.type)) {
               let SectionComponent;
               switch (section.type) {
@@ -140,6 +152,9 @@ const Index = () => {
                   break;
                 case "brand":
                   SectionComponent = BrandSection;
+                  break;
+                case "sale":  
+                  SectionComponent = SaleSection;
                   break;
                 default:
                   return null;

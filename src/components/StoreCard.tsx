@@ -10,6 +10,7 @@ interface StoreCardProps {
   address: string;
   tagline: string;
   taglineSecondary?: string;
+  backgroundColor?: string; // لون الخلفية العلوية (اختياري)
 }
 
 const StoreCard: React.FC<StoreCardProps> = ({
@@ -22,51 +23,44 @@ const StoreCard: React.FC<StoreCardProps> = ({
   address,
   tagline,
   taglineSecondary,
+  backgroundColor = "bg-pink-50", // الافتراضي
 }) => {
   return (
-    <div className="relative rounded-lg overflow-hidden h-60 border border-transparent hover:border-blue-500 transition-all duration-300 shadow hover:shadow-lg">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-100/80 to-pink-50/80"></div>
-        <div className="absolute inset-0 flex items-center p-6">
-          <div className="flex w-full">
-            <div className="flex items-center justify-center w-24 h-24 bg-white rounded-full overflow-hidden border-4 border-white transition duration-300">
-              <img src={image} alt={name} className="h-16 object-contain" />
-            </div>
-
-            <div className="ml-4 flex-1">
-              <h3 className="text-xl font-bold mb-1">{name}</h3>
-              <p className="text-gray-700 text-sm mb-1">{address}</p>
-              <div className="flex items-center text-sm mb-3">
-                <div className="flex items-center mr-4">
-                  {Array(5)
-                    .fill(0)
-                    .map((_, index) => (
-                      <span
-                        key={index}
-                        className={`${
-                          index < Math.floor(rating)
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  <span className="ml-1 text-gray-600">({reviewCount})</span>
-                </div>
-                <div className="text-gray-600">{itemCount} items</div>
+    <div className="w-full max-w-sm rounded-xl overflow-hidden shadow border border-gray-200">
+      {/* العنوان والعبارات */}
+      <div className={`p-4 ${backgroundColor}`}>
+        <div className="flex items-center justify-between">
+          <img src={image} alt={name} className="h-24 object-contain" />
+          <div className="text-right">
+            <div className="text-base font-semibold text-gray-800">{tagline}</div>
+            {taglineSecondary && (
+              <div className="text-sm font-medium text-gray-600">
+                {taglineSecondary}
               </div>
-
-              <div className="mt-2 text-red-600 text-lg font-medium">
-                {tagline}
-              </div>
-              {taglineSecondary && (
-                <div className="text-red-600 font-medium">
-                  {taglineSecondary}
-                </div>
-              )}
-            </div>
+            )}
           </div>
+        </div>
+      </div>
+
+      {/* التفاصيل */}
+      <div className="bg-white p-4">
+        <div className="flex items-center mb-1">
+          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center mr-2 text-sm font-semibold text-green-700">
+            {name[0]}
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-gray-800">{name}</h3>
+            <p className="text-xs text-gray-500 truncate">{address}</p>
+          </div>
+        </div>
+
+        {/* التقييم وعدد العناصر */}
+        <div className="flex items-center text-sm text-gray-600 mt-2">
+          <div className="flex items-center mr-4">
+            <span className="text-green-600 font-bold">{rating.toFixed(1)}</span>
+            <span className="ml-1 text-gray-400">({reviewCount})</span>
+          </div>
+          <div className="text-green-600 font-medium">{itemCount} items</div>
         </div>
       </div>
     </div>
