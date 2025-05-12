@@ -61,16 +61,15 @@ const Hero: React.FC = () => {
 
   return (
     <motion.div
-    className={`rounded-lg p-8 mb-8 overflow-hidden transition-colors duration-500 ${bgColor}`}
-    key={bgColor}
-    initial={{ opacity: 0.8 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-    whileTap={{ scale: 1.03 }}
-    whileHover={{ scale: 1.02 }}
-    transition={{ type: "spring", stiffness: 300 }}
-  >
-  
+      className={`rounded-lg p-8 mb-8 overflow-hidden transition-colors duration-500 ${bgColor}`}
+      key={bgColor}
+      initial={{ opacity: 0.8 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      whileTap={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ type: "spring", stiffness: 300 }}
+    >
       <div
         {...swipeHandlers}
         className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center"
@@ -83,7 +82,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 30 }}
               transition={{ duration: 0.5 }}
-              className="text-4xl md:text-5xl font-bold mb-3"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3"
             >
               {title}
             </motion.h1>
@@ -96,7 +95,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4 }}
-              className="text-xl mb-6 text-gray-700"
+              className="text-lg sm:text-xl mb-6 text-gray-700"
             >
               {subtitle}
             </motion.p>
@@ -106,7 +105,7 @@ const Hero: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <Button className="bg-blue-500 hover:bg-blue-600 px-8 py-6 text-white font-medium rounded-md">
+            <Button className="bg-blue-500 hover:bg-blue-600 px-8 py-4 text-white font-medium rounded-md">
               Buy Now
             </Button>
           </motion.div>
@@ -122,7 +121,7 @@ const Hero: React.FC = () => {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.5 }}
-              className="h-80 w-auto object-contain"
+              className="h-64 sm:h-80 md:h-96 w-auto object-contain"
             />
           </AnimatePresence>
         </div>

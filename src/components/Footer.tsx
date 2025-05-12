@@ -1,23 +1,22 @@
 import React from "react";
 import Logo from "./Logo";
-import { Facebook, Instagram, Mail, MapIcon, MapPin, Phone, Twitter } from "lucide-react";
+import { Facebook, Instagram, Mail, MapPin, Phone, Twitter } from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-blue-50 py-10">
+    <footer className="bg-blue-50 pt-10">
       <div className="container mx-auto px-4">
-        <div className="bg-white rounded-xl shadow-md p-10 grid grid-cols-1 md:grid-cols-4 gap-20  max-w-[1280px] px-4 sm:px-6 lg:px-8 mx-auto">
+        <div className="bg-white rounded-xl shadow-md p-10 grid grid-cols-1 md:grid-cols-4 gap-20 max-w-[1280px] px-4 sm:px-6 lg:px-8 mx-auto">
           {/* العمود الأول: الشعار والنشرة */}
           <div className="flex flex-col space-y-4">
             <Logo />
             <p className="text-sm">Subscribe to our newsletter to get latest updates</p>
             <div className="flex">
-            <input 
-  type="email" 
-  placeholder="Your Email Address" 
-  className="bg-white border border-blue-200 rounded-l-md px-1 py-2 flex-grow text-sm focus:outline-none focus:border-blue-500"
-/>
-
+              <input 
+                type="email" 
+                placeholder="Your Email Address" 
+                className="bg-white border border-blue-200 rounded-l-md px-1 py-2 flex-grow text-sm focus:outline-none focus:border-blue-500"
+              />
               <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-r-md px-4 text-sm">
                 Subscribe
               </button>
@@ -32,9 +31,7 @@ const Footer: React.FC = () => {
               <a href="#" className="bg-blue-500 p-2 rounded-full text-white">
                 <Twitter className="h-5 w-5" />
               </a>
-             
             </div>
-            
           </div>
 
           {/* العمود الثاني: روابط سريعة */}
@@ -60,7 +57,6 @@ const Footer: React.FC = () => {
                 </div>
                 <p className="text-sm">support@vristo.com</p>
               </div>
-              
               <div>
                 <div className="flex items-center mb-2">
                   <Phone className="h-5 w-5 mr-2" />
@@ -68,7 +64,6 @@ const Footer: React.FC = () => {
                 </div>
                 <p className="text-sm">0506667277</p>
               </div>
-              
               <div>
                 <div className="flex items-center mb-2">
                   <MapPin className="h-5 w-5 mr-2" />
@@ -89,10 +84,11 @@ const Footer: React.FC = () => {
             </ul>
           </div>
         </div>
+      </div>
 
-        <div className="border-t border-gray-200 mt-10 pt-6 text-center">
-          <p className="text-sm text-gray-600">© 2025 Vristo.</p>
-        </div>
+      {/* قسم الحقوق منفصل مع خلفية مختلفة */}
+      <div className="bg-gray-800 py-4 mt-10">
+        <p className="text-center text-sm text-white">© 2025 Vristo.</p>
       </div>
     </footer>
   );

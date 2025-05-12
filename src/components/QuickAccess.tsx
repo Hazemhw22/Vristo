@@ -1,6 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const QuickAccess: React.FC = () => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+
+      const atBottom = scrollTop + windowHeight >= documentHeight - 50; // 50px before bottom
+      setIsVisible(!atBottom);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  if (!isVisible) return null;
+
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-3 bg-white shadow-lg rounded-full px-6 py-3 z-50">
       <button className="bg-blue-500 text-white p-2 rounded-full transition-transform transform hover:scale-110 hover:rotate-12">
