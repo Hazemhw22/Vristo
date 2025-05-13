@@ -4,7 +4,7 @@ import FloatingButtons from "@/components/FloatingButtons";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import ProductSection from "@/components/ProductSection";
-import QuickAccess from "@/components/QuickAccess";
+import MobileNavigation from "@/components/MobileNavigation";
 import RecommendedStores from "@/components/RecommendedStores";
 import StoreSection from "@/components/StoreSection";
 import BrandSection from "@/components/BrandSection";
@@ -119,7 +119,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <main className="justify-center px-4 sm:px-8 md:px-16 lg:px-20 py-6 space-y-5">
+      <main className="justify-center px-4 sm:px-8 pb-16 md:pb-0 md:px-16 lg:px-20 py-6 space-y-5">
         {/* Hero & RecommendedStores */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
           <div className="lg:col-span-2 w-full">
@@ -172,7 +172,7 @@ const Index = () => {
       </main>
       <Footer />
       <FloatingButtons />
-      <QuickAccess />
+      <MobileNavigation />
     </div>
   );
 };

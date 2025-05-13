@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -51,6 +52,18 @@ export default {
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
+				},
+				vristo: {
+					50: '#e6f1ff',
+					100: '#b3d1ff',
+					200: '#80b1ff',
+					300: '#4d91ff',
+					400: '#1a71ff',
+					500: '#0052cc',
+					600: '#004099',
+					700: '#002e66',
+					800: '#001b33',
+					900: '#000d19',
 				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
