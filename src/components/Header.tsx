@@ -15,6 +15,7 @@ const Header: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [language, setLanguage] = useState("en");
 
   return (
     <>
@@ -53,6 +54,26 @@ const Header: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow-sm z-30 sticky top-0 w-full">
         <div className="container mx-auto px-4">
+          {/* Location at the top (for desktop) */}
+          <div className="hidden md:flex justify-between items-center py-2 bg-blue-50">
+            <div className="flex items-center text-sm">
+              <MapPin className="h-4 w-4 text-blue-600" />
+              <span className="ml-1 text-gray-600">Arad, Israel</span>
+            </div>
+
+            {/* Language Selector */}
+            <div className="flex items-center">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="border p-1 text-sm rounded"
+              >
+                <option value="en">English</option>
+                <option value="he">Hebrew</option>
+              </select>
+            </div>
+          </div>
+
           {/* Mobile Header */}
           <div className="flex items-center justify-between py-2 md:hidden">
             {/* Menu button */}
@@ -115,13 +136,23 @@ const Header: React.FC = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="relative w-64">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                <input
-                  type="search"
-                  placeholder="Search products..."
-                  className="pl-10 pr-4 py-2 rounded-full bg-gray-100 w-full text-sm outline-none"
-                />
+              {/* Desktop Search Bar */}
+              <div className={`relative flex items-center ${searchOpen ? "w-64" : "w-16"} transition-all duration-300`}>
+                {searchOpen && (
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchText}
+                    onChange={(e) => setSearchText(e.target.value)}
+                    className="pl-10 pr-4 py-2 rounded-full bg-gray-100 w-full text-sm outline-none"
+                  />
+                )}
+                <button
+                  onClick={() => setSearchOpen(!searchOpen)}
+                  className="text-gray-700"
+                >
+                  <Search className="h-6 w-6" />
+                </button>
               </div>
               <Bell className="h-6 w-6 text-gray-700" />
               <Link to="/cart">
