@@ -48,29 +48,13 @@ const StoreSection: React.FC<StoreSectionProps> = ({ title, stores }) => {
       </div>
 
       <div className="relative">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {visibleStores.map((store) => (
             <StoreCard key={store.id} {...store} />
           ))}
         </div>
 
-        {startIndex > 0 && (
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-        )}
-
-        {startIndex + itemsPerPage < stores.length && (
-          <button
-            onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2"
-          >
-            <ArrowRight className="h-5 w-5" />
-          </button>
-        )}
+   
       </div>
     </div>
   );

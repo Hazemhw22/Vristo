@@ -44,7 +44,7 @@ const BrandSection: React.FC<BrandSectionProps> = ({ title, brands }) => {
       </div>
 
       <div className="relative">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"> 
           {visibleBrands.map((brand) => (
             <div
               key={brand.id}
@@ -59,23 +59,8 @@ const BrandSection: React.FC<BrandSectionProps> = ({ title, brands }) => {
           ))}
         </div>
 
-        {startIndex > 0 && (
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 sm:p-3 hover:bg-gray-100 transition"
-          >
-            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
-          </button>
-        )}
-
-        {startIndex + itemsPerPage < brands.length && (
-          <button
-            onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white shadow-md rounded-full p-2 sm:p-3 hover:bg-gray-100 transition"
-          >
-            <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5" />
-          </button>
-        )}
+    
+        
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CategorySection from "@/components/CategorySection";
 import FloatingButtons from "@/components/FloatingButtons";
 import Footer from "@/components/Footer";
@@ -9,10 +9,42 @@ import RecommendedStores from "@/components/RecommendedStores";
 import StoreSection from "@/components/StoreSection";
 import BrandSection from "@/components/BrandSection";
 import Header from "@/components/Header";
-import { Flame } from "lucide-react";
 import SaleSection from "@/components/SaleSection";
+import RestaurantProducts from "@/components/RestaurantProducts";
+import { Flame } from "lucide-react";
 
 const Index = () => {
+  const [cartItems, setCartItems] = useState([
+    {
+      id: "1",
+      name: "Burger Meal",
+      image: "/images/burger.jpg",
+      price: 12,
+    },
+    {
+      id: "2",
+      name: "Pizza Slice",
+      image: "/images/pizza.jpg",
+      price: 8,
+    },
+  ]);
+
+  const onAddToCart = (product) => {
+    setCartItems((prev) => [...prev, product]);
+  };
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    handleResize(); // Initial check
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const [sections] = useState(() => [
     {
       type: "hero",
@@ -22,16 +54,15 @@ const Index = () => {
         image: "/images/Apple-iPhone-16-release-date-price-and-features.jpg",
       },
     },
- 
     {
       type: "category",
       props: {
-        categories: Array(10)
+        categories: Array(8)
           .fill(0)
           .map((_, i) => ({
             id: `c${i + 1}`,
             name: `Category ${i + 1}`,
-            image: "/public/logo.svg",
+            image: "/public/images/KFC_logo.svg.png",
           })),
       },
     },
@@ -64,8 +95,7 @@ const Index = () => {
           .map((_, i) => ({
             id: `s${i + 1}`,
             name: `Store ${i + 1}`,
-            image:
-              "/images/golden-crownand-laurel-logo-jql2er5hlfitk4jc-jql2er5hlfitk4jc.png",
+            image: "/images/golden-crownand-laurel-logo-jql2er5hlfitk4jc-jql2er5hlfitk4jc.png",
             rating: i,
             reviewCount: i * 2,
             itemCount: i * 10,
@@ -92,15 +122,14 @@ const Index = () => {
       },
     },
     {
-      type: "sale", 
+      type: "sale",
       props: {
         title: "When Words aren't Enough",
         subtitle: "Say It with Gifts!",
-        image: "/public/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png", 
+        image: "/public/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png",
         buttonText: "Shop Now",
       },
     },
- 
   ]);
 
   const [recommendedStores] = useState(() =>
@@ -109,35 +138,28 @@ const Index = () => {
       .map((_, index) => ({
         id: `rs${index + 1}`,
         name: `Store ${index + 1}`,
-        icon:
-          index % 2 === 0
-            ? "/images/chanel-1.jpg"
-            : "/images/Huawei-Logo.jpg",
+        icon: index % 2 === 0 ? "/images/chanel-1.jpg" : "/images/Huawei-Logo.jpg",
       }))
   );
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+
       <main className="justify-center px-4 sm:px-8 pb-16 md:pb-0 md:px-16 lg:px-20 py-6 space-y-5">
-        {/* Hero & RecommendedStores */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <div className="lg:col-span-2 w-full">
-            {sections.find((s) => s.type === "hero") && (
-              <div className="max-w-5xl">
-                <Hero {...sections.find((s) => s.type === "hero")!.props} />
-              </div>
-            )}
-          </div>
-          <div className="lg:col-span-1 w-full">
-            <RecommendedStores stores={recommendedStores} />
-          </div>
+        <div className="max-w-7xl mx-auto mb-12">
+          {sections.find((s) => s.type === "hero") && (
+            <Hero {...sections.find((s) => s.type === "hero")!.props} />
+          )}
         </div>
 
-        {/* Center sections */}
+        <div className="max-w-7xl mx-auto mb-12">
+          <RecommendedStores stores={recommendedStores} />
+        </div>
+
         <div className="flex flex-col items-center space-y-6 px-4 sm:px-6 md:px-10">
           {sections.map((section, idx) => {
-            const centeredSections = ["category", "product", "store", "brand" , "sale"];
+            const centeredSections = ["category", "product", "store", "brand", "sale"];
             if (centeredSections.includes(section.type)) {
               let SectionComponent;
               switch (section.type) {
@@ -153,7 +175,7 @@ const Index = () => {
                 case "brand":
                   SectionComponent = BrandSection;
                   break;
-                case "sale":  
+                case "sale":
                   SectionComponent = SaleSection;
                   break;
                 default:
@@ -162,7 +184,10 @@ const Index = () => {
 
               return (
                 <div key={idx} className="w-full max-w-7xl">
-                  <SectionComponent {...section.props} />
+                  <SectionComponent
+                    {...section.props}
+                    onAddToCart={onAddToCart}
+                  />
                 </div>
               );
             }
@@ -170,8 +195,9 @@ const Index = () => {
           })}
         </div>
       </main>
+
       <Footer />
-      <FloatingButtons />
+      {!isMobile && <FloatingButtons />}
       <MobileNavigation />
     </div>
   );

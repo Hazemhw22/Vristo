@@ -4,7 +4,7 @@ import {
   ChevronDown,
   Search,
   Bell,
-  ShoppingCart,
+  ShoppingBag,
   UserCircle,
   Menu,
   X,
@@ -61,24 +61,22 @@ const Header: React.FC = () => {
               <span className="ml-1 text-gray-600">Arad, Israel</span>
             </div>
 
-            {/* Language Selector */}
-            <div className="flex items-center">
-              <select
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className="border p-1 text-sm rounded"
-              >
-                <option value="en">English</option>
-                <option value="he">Hebrew</option>
-              </select>
-            </div>
-          </div>
+            {/* Language Selector with background and animation */}
+            <div className="flex items-center space-x-2 p-2 text-blue-600 hover:text-blue-800 transition-all duration-300 cursor-pointer">
+    <span
+      className="text-sm"
+      onClick={() => setLanguage(language === "en" ? "he" : "en")}
+    >
+      {language === "en" ? "EN" : "HE"}
+    </span>
+  </div>
+</div>
 
           {/* Mobile Header */}
           <div className="flex items-center justify-between py-2 md:hidden">
             {/* Menu button */}
             <button onClick={() => setSidebarOpen(true)} className="text-gray-700">
-              <Menu className="h-6 w-6" />
+              <Menu className="h-6 w-6 transition-all duration-300 hover:text-blue-600" />
             </button>
 
             {/* Location */}
@@ -89,10 +87,13 @@ const Header: React.FC = () => {
 
             {/* Icons */}
             <div className="flex items-center gap-2">
-              <button onClick={() => setSearchOpen(true)} className="text-gray-700">
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="text-gray-700 transition-all duration-300 hover:text-blue-600"
+              >
                 <Search className="h-5 w-5" />
               </button>
-              <button className="text-gray-700">
+              <button className="text-gray-700 transition-all duration-300 hover:text-blue-600">
                 <Bell className="h-5 w-5" />
               </button>
             </div>
@@ -126,18 +127,47 @@ const Header: React.FC = () => {
           {/* Desktop Header */}
           <div className="hidden md:flex justify-between items-center py-4">
             <div className="flex items-center space-x-8">
-              <Link to="/" className="text-2xl font-bold text-blue-600">Vristo</Link>
+              <Link
+                to="/"
+                className="text-2xl font-bold text-blue-600 hover:text-blue-700 transition-all duration-300"
+              >
+                Vristo
+              </Link>
               <nav className="flex space-x-6 text-gray-700">
-                <Link to="/">Home</Link>
-                <Link to="/categories">Categories</Link>
-                <Link to="/favourite">Favourite</Link>
-                <Link to="/stores">Stores</Link>
+                <Link
+                  to="/"
+                  className="transition-all duration-300 hover:text-blue-600"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/categories"
+                  className="transition-all duration-300 hover:text-blue-600"
+                >
+                  Categories
+                </Link>
+                <Link
+                  to="/favourite"
+                  className="transition-all duration-300 hover:text-blue-600"
+                >
+                  Favourite
+                </Link>
+                <Link
+                  to="/stores"
+                  className="transition-all duration-300 hover:text-blue-600"
+                >
+                  Stores
+                </Link>
               </nav>
             </div>
 
             <div className="flex items-center space-x-4">
               {/* Desktop Search Bar */}
-              <div className={`relative flex items-center ${searchOpen ? "w-64" : "w-16"} transition-all duration-300`}>
+              <div
+                className={`relative flex items-center ${
+                  searchOpen ? "w-64" : "w-16"
+                } transition-all duration-300`}
+              >
                 {searchOpen && (
                   <input
                     type="text"
@@ -149,16 +179,19 @@ const Header: React.FC = () => {
                 )}
                 <button
                   onClick={() => setSearchOpen(!searchOpen)}
-                  className="text-gray-700"
+                  className="text-gray-700 transition-all duration-300 hover:text-blue-600"
                 >
                   <Search className="h-6 w-6" />
                 </button>
               </div>
-              <Bell className="h-6 w-6 text-gray-700" />
+              <Bell className="h-6 w-6 text-gray-700 transition-all duration-300 hover:text-blue-600" />
               <Link to="/cart">
-                <ShoppingCart className="h-6 w-6 text-gray-700" />
+              <ShoppingBag className="h-6 w-6 text-gray-700 transition-all duration-300 hover:text-blue-600" />
               </Link>
-              <Link to="/signin" className="flex items-center text-gray-700 hover:text-blue-600">
+              <Link
+                to="/signin"
+                className="flex items-center text-gray-700 hover:text-blue-600 transition-all duration-300"
+              >
                 <UserCircle className="h-6 w-6 mr-1" />
                 <span>Sign In</span>
               </Link>
