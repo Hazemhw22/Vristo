@@ -169,17 +169,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
 
             <div className="flex justify-between">
+              
+              <Button variant="outline" onClick={() => setIsQuickSellOpen(false)}>
+                Close
+              </Button>
               <Button
                 className="bg-blue-500 hover:bg-blue-600"
                 onClick={() => {
-                  // منطق الإضافة للسلة
+
                   setIsQuickSellOpen(false);
                 }}
               >
-                إضافة إلى السلة
-              </Button>
-              <Button variant="outline" onClick={() => setIsQuickSellOpen(false)}>
-                إغلاق
+               Add To Card
               </Button>
             </div>
           </Dialog.Panel>
