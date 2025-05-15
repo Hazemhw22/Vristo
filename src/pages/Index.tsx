@@ -11,6 +11,7 @@ import BrandSection from "@/components/BrandSection";
 import Header from "@/components/Header";
 import SaleSection from "@/components/SaleSection";
 import RestaurantProducts from "@/components/RestaurantProducts";
+import SideCart from "@/components/SideCart"; // ✅ جديد
 import { Flame } from "lucide-react";
 
 const Index = () => {
@@ -18,13 +19,13 @@ const Index = () => {
     {
       id: "1",
       name: "Burger Meal",
-      image: "/images/burger.jpg",
+      image: "/public/images/photo-1512152272829-e3139592d56f.jpg",
       price: 12,
     },
     {
       id: "2",
       name: "Pizza Slice",
-      image: "/images/pizza.jpg",
+      image: "/public/images/photo-1565299624946-b28f40a0ae38.jpg",
       price: 8,
     },
   ]);
@@ -33,7 +34,13 @@ const Index = () => {
     setCartItems((prev) => [...prev, product]);
   };
 
+  const handleRemoveFromCart = (id) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const [showCart, setShowCart] = useState(false); // ✅ جديد
   const [isMobile, setIsMobile] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -42,8 +49,17 @@ const Index = () => {
 
     handleResize(); // Initial check
     window.addEventListener("resize", handleResize);
+
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [darkMode]);
+
+  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const [sections] = useState(() => [
     {
@@ -76,7 +92,7 @@ const Index = () => {
           .map((_, i) => ({
             id: `p${i + 1}`,
             name: `Product ${i + 1}`,
-            image: "/images/Apple-iPhone-16-release-date-price-and-features.jpg",
+            image: "/public/images/pngimg.com - iphone16_PNG35.png",
             price: 75 + i * 10,
             originalPrice: 100 + i * 10,
             discount: 25,
@@ -95,7 +111,8 @@ const Index = () => {
           .map((_, i) => ({
             id: `s${i + 1}`,
             name: `Store ${i + 1}`,
-            image: "/images/golden-crownand-laurel-logo-jql2er5hlfitk4jc-jql2er5hlfitk4jc.png",
+            image:
+              "/images/golden-crownand-laurel-logo-jql2er5hlfitk4jc-jql2er5hlfitk4jc.png",
             rating: i,
             reviewCount: i * 2,
             itemCount: i * 10,
@@ -126,7 +143,8 @@ const Index = () => {
       props: {
         title: "When Words aren't Enough",
         subtitle: "Say It with Gifts!",
-        image: "/public/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png",
+        image:
+          "/public/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png",
         buttonText: "Shop Now",
       },
     },
@@ -143,8 +161,8 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} />
 
       <main className="justify-center px-4 sm:px-8 pb-16 md:pb-0 md:px-16 lg:px-20 py-6 space-y-5">
         <div className="max-w-7xl mx-auto mb-12">
@@ -154,18 +172,23 @@ const Index = () => {
         </div>
 
         <div className="max-w-7xl mx-auto mb-12">
+          {sections.find((s) => s.type === "category") && (
+            <CategorySection
+              {...sections.find((s) => s.type === "category")!.props}
+            />
+          )}
+        </div>
+
+        <div className="max-w-7xl mx-auto mb-12">
           <RecommendedStores stores={recommendedStores} />
         </div>
 
         <div className="flex flex-col items-center space-y-6 px-4 sm:px-6 md:px-10">
           {sections.map((section, idx) => {
-            const centeredSections = ["category", "product", "store", "brand", "sale"];
+            const centeredSections = ["product", "store", "brand", "sale"];
             if (centeredSections.includes(section.type)) {
               let SectionComponent;
               switch (section.type) {
-                case "category":
-                  SectionComponent = CategorySection;
-                  break;
                 case "product":
                   SectionComponent = ProductSection;
                   break;
@@ -184,10 +207,7 @@ const Index = () => {
 
               return (
                 <div key={idx} className="w-full max-w-7xl">
-                  <SectionComponent
-                    {...section.props}
-                    onAddToCart={onAddToCart}
-                  />
+                  <SectionComponent {...section.props} onAddToCart={onAddToCart} />
                 </div>
               );
             }
@@ -197,7 +217,19 @@ const Index = () => {
       </main>
 
       <Footer />
-      {!isMobile && <FloatingButtons />}
+
+      {/* ✅ زر فتح السلة */}
+      {!isMobile && (
+        <FloatingButtons onCartClick={() => setShowCart(true)} />
+      )}
+
+      <SideCart
+        isOpen={showCart}
+        onClose={() => setShowCart(false)}
+        cartItems={cartItems}
+        onRemoveItem={handleRemoveFromCart}
+      />
+
       <MobileNavigation />
     </div>
   );

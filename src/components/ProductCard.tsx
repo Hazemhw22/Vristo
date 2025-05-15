@@ -66,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <>
       <div
-        className="bg-white rounded-lg shadow-lg relative w-full max-w-sm transform transition duration-300 hover:scale-[1.08] group"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm transform transition duration-300 hover:scale-[1.08] group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -76,8 +76,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         )}
 
-        <button className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-sm z-10 transition hover:scale-110">
-          <Heart className="h-5 w-5 text-blue-500" />
+        <button className="absolute top-2 right-2 bg-white dark:bg-gray-700 p-1 rounded-full shadow-sm z-10 transition hover:scale-110">
+          <Heart className="h-5 w-5 text-blue-500 dark:text-blue-400" />
         </button>
 
         <div className="p-4">
@@ -92,26 +92,26 @@ const ProductCard: React.FC<ProductCardProps> = ({
             />
           </div>
 
-          <h3 className="font-medium text-sm mb-1 line-clamp-2 h-10 text-center">{name}</h3>
+          <h3 className="font-medium text-sm mb-1 line-clamp-2 h-10 text-center text-gray-900 dark:text-gray-100">{name}</h3>
 
-          <div className="text-xs text-gray-500 mb-2 text-center">{store}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 text-center">{store}</div>
 
           <div className="flex justify-center items-center mb-3">
             {renderStars(rating)}
-            <span className="ml-1 text-xs text-gray-500">({reviewCount})</span>
+            <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">({reviewCount})</span>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
               {originalPrice && (
-                <div className="text-gray-400 line-through text-sm">
+                <div className="text-gray-400 dark:text-gray-500 line-through text-sm">
                   ${originalPrice.toFixed(2)}
                 </div>
               )}
-              <div className="font-bold">${price.toFixed(2)}</div>
+              <div className="font-bold text-gray-900 dark:text-gray-100">${price.toFixed(2)}</div>
             </div>
 
-            <Button className="bg-blue-500 hover:bg-blue-600 p-2 rounded-md transition hover:scale-105">
+            <Button className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 p-2 rounded-md transition hover:scale-105">
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </div>
@@ -119,35 +119,39 @@ const ProductCard: React.FC<ProductCardProps> = ({
       </div>
 
       {/* Quick Sell Modal */}
-      <Dialog open={isQuickSellOpen} onClose={() => setIsQuickSellOpen(false)} className="fixed z-50 inset-0 overflow-y-auto">
+      <Dialog
+        open={isQuickSellOpen}
+        onClose={() => setIsQuickSellOpen(false)}
+        className="fixed z-50 inset-0 overflow-y-auto"
+      >
         <div className="flex items-center justify-center min-h-screen bg-black/50 p-4">
-          <Dialog.Panel className="bg-white rounded-[20px] p-6 w-full max-w-md">
+          <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-[20px] p-6 w-full max-w-md">
             <img src={image} alt={name} className="w-full h-48 object-contain mb-4 rounded-lg" />
 
-            <Dialog.Title className="text-xl font-semibold mb-2 text-center">{name}</Dialog.Title>
+            <Dialog.Title className="text-xl font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">{name}</Dialog.Title>
 
             {/* النجوم + التقييم */}
             <div className="flex justify-center items-center mb-2">
               {renderStars(rating)}
-              <span className="ml-2 text-sm text-gray-500">({reviewCount} تقييم)</span>
+              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({reviewCount} تقييم)</span>
             </div>
 
             {/* الوصف البسيط */}
             {description && (
-              <p className="text-center text-gray-600 text-sm mb-4">{description}</p>
+              <p className="text-center text-gray-600 dark:text-gray-300 text-sm mb-4">{description}</p>
             )}
 
             {/* الفئة */}
             {category && (
-              <div className="mb-3 text-sm text-gray-700">
-                <span className="text-gray-500">الفئة:</span>
+              <div className="mb-3 text-sm text-gray-700 dark:text-gray-400">
+                <span className="text-gray-500 dark:text-gray-400">الفئة:</span>
                 <span className="ml-2 font-medium">{category}</span>
               </div>
             )}
 
             {/* مميزات كنقاط */}
             {features && features.length > 0 && (
-              <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1 mb-4">
+              <ul className="list-disc pl-5 text-sm text-gray-700 dark:text-gray-400 space-y-1 mb-4">
                 {features.map((feature, index) => (
                   <li key={index}>{feature}</li>
                 ))}
@@ -156,31 +160,33 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
             {/* السعر */}
             <div className="mb-4">
-              <div className="text-gray-500 text-sm">السعر:</div>
-              <div className="text-lg font-bold">${price.toFixed(2)}</div>
+              <div className="text-gray-500 dark:text-gray-400 text-sm">السعر:</div>
+              <div className="text-lg font-bold text-gray-900 dark:text-gray-100">${price.toFixed(2)}</div>
             </div>
 
             {/* الكمية */}
-            <div className="mb-4 flex items-center gap-3">
+            <div className="mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
               <span>الكمية:</span>
-              <button onClick={decreaseQty} className="bg-gray-200 px-2 py-1 rounded">-</button>
+              <button onClick={decreaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
+                -
+              </button>
               <span className="w-8 text-center">{quantity}</span>
-              <button onClick={increaseQty} className="bg-gray-200 px-2 py-1 rounded">+</button>
+              <button onClick={increaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
+                +
+              </button>
             </div>
 
             <div className="flex justify-between">
-              
               <Button variant="outline" onClick={() => setIsQuickSellOpen(false)}>
                 Close
               </Button>
               <Button
-                className="bg-blue-500 hover:bg-blue-600"
+                className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
                 onClick={() => {
-
                   setIsQuickSellOpen(false);
                 }}
               >
-               Add To Card
+                Add To Cart
               </Button>
             </div>
           </Dialog.Panel>

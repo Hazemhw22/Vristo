@@ -48,7 +48,7 @@ const ProductSection: React.FC<ProductSectionProps> = ({ title, icon, products }
   const visibleProducts = products.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="mb-10 px-4 md:px-6 lg:px-10 w-full">
+    <div className="mb-10">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center">
           <h2 className="text-xl font-bold">{title}</h2>
