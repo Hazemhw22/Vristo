@@ -66,7 +66,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <>
       <div
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm transform transition duration-300 hover:scale-[1.08] group"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -82,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         <div className="p-4">
           <div
-            className="h-36 flex items-center justify-center mb-3 transition duration-300 cursor-pointer"
+            className="h-36 flex items-center justify-center mb-3 transition duration-300 cursor-pointer transform group-hover:scale-[1.08]"
             onClick={() => setIsQuickSellOpen(true)}
           >
             <img
@@ -92,11 +92,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
             />
           </div>
 
-          <h3 className="font-medium text-sm mb-1 line-clamp-2 h-10 text-center text-gray-900 dark:text-gray-100">{name}</h3>
+          <h3 className="font-medium text-sm mb-1 line-clamp-2 h-5 text-gray-900 dark:text-gray-100">{name}</h3>
 
-          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2 text-center">{store}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">{store}</div>
 
-          <div className="flex justify-center items-center mb-3">
+          <div className="flex mb-3">
             {renderStars(rating)}
             <span className="ml-1 text-xs text-gray-500 dark:text-gray-400">({reviewCount})</span>
           </div>
@@ -128,20 +128,19 @@ const ProductCard: React.FC<ProductCardProps> = ({
           <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-[20px] p-6 w-full max-w-md">
             <img src={image} alt={name} className="w-full h-48 object-contain mb-4 rounded-lg" />
 
-            <Dialog.Title className="text-xl font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">{name}</Dialog.Title>
+            <Dialog.Title className="text-xl font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
+              {name}
+            </Dialog.Title>
 
-            {/* النجوم + التقييم */}
             <div className="flex justify-center items-center mb-2">
               {renderStars(rating)}
               <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({reviewCount} تقييم)</span>
             </div>
 
-            {/* الوصف البسيط */}
             {description && (
               <p className="text-center text-gray-600 dark:text-gray-300 text-sm mb-4">{description}</p>
             )}
 
-            {/* الفئة */}
             {category && (
               <div className="mb-3 text-sm text-gray-700 dark:text-gray-400">
                 <span className="text-gray-500 dark:text-gray-400">الفئة:</span>
@@ -149,7 +148,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             )}
 
-            {/* مميزات كنقاط */}
             {features && features.length > 0 && (
               <ul className="list-disc pl-5 text-sm text-gray-700 dark:text-gray-400 space-y-1 mb-4">
                 {features.map((feature, index) => (
@@ -158,13 +156,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </ul>
             )}
 
-            {/* السعر */}
             <div className="mb-4">
               <div className="text-gray-500 dark:text-gray-400 text-sm">السعر:</div>
               <div className="text-lg font-bold text-gray-900 dark:text-gray-100">${price.toFixed(2)}</div>
             </div>
 
-            {/* الكمية */}
             <div className="mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
               <span>الكمية:</span>
               <button onClick={decreaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
