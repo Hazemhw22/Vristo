@@ -184,6 +184,7 @@ const Header: React.FC = () => {
                 <Link to="/categories" className="hover:text-blue-600">Categories</Link>
                 <Link to="/favourite" className="hover:text-blue-600">Favourite</Link>
                 <Link to="/stores" className="hover:text-blue-600">Stores</Link>
+                  <Link to="/products" className="hover:text-blue-600">Products</Link> {/* ← الجديد */}
               </nav>
             </div>
             <div className="flex items-center space-x-4">

@@ -10,7 +10,6 @@ import StoreSection from "@/components/StoreSection";
 import BrandSection from "@/components/BrandSection";
 import Header from "@/components/Header";
 import SaleSection from "@/components/SaleSection";
-import RestaurantProducts from "@/components/RestaurantProducts";
 import SideCart from "@/components/SideCart"; // ✅ جديد
 import { Flame } from "lucide-react";
 
@@ -47,7 +46,7 @@ const Index = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize(); // Initial check
+    handleResize();   
     window.addEventListener("resize", handleResize);
 
     if (darkMode) {
@@ -218,7 +217,6 @@ const Index = () => {
 
       <Footer />
 
-      {/* ✅ زر فتح السلة */}
       {!isMobile && (
         <FloatingButtons onCartClick={() => setShowCart(true)} />
       )}

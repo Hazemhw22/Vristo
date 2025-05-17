@@ -17,6 +17,7 @@ interface ProductCardProps {
   category?: string;
   description?: string;
   features?: string[];
+  onAddToCart?: (product: { id: string; name: string; image: string; price: number; quantity: number }) => void;
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -33,6 +34,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   category,
   description,
   features,
+  onAddToCart,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isQuickSellOpen, setIsQuickSellOpen] = useState(false);
@@ -40,6 +42,12 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
   const increaseQty = () => setQuantity((prev) => prev + 1);
   const decreaseQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const handleAddToCart = () => {
+    if (onAddToCart) {
+      onAddToCart({ id, name, image, price, quantity });
+    }
+  };
 
   const renderStars = (rating: number) => {
     return Array(5)
@@ -49,13 +57,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
         return (
           <svg key={index} className="w-4 h-4" viewBox="0 0 24 24" fill="none">
             <defs>
-              <linearGradient id={`star-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
+              <linearGradient id={`star-${id}-${index}`} x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset={`${fillPercent * 100}%`} stopColor="#facc15" />
                 <stop offset={`${fillPercent * 100}%`} stopColor="#d1d5db" />
               </linearGradient>
             </defs>
             <path
-              fill={`url(#star-${index})`}
+              fill={`url(#star-${id}-${index})`}
               d="M12 2l2.9 6h6.1l-4.9 4.2L18.9 20 12 15.8 5.1 20l2.8-7.8L3 8h6.1L12 2z"
             />
           </svg>
@@ -93,7 +101,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
 
           <h3 className="font-medium text-sm mb-1 line-clamp-2 h-5 text-gray-900 dark:text-gray-100">{name}</h3>
-
           <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">{store}</div>
 
           <div className="flex mb-3">
@@ -111,7 +118,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <div className="font-bold text-gray-900 dark:text-gray-100">${price.toFixed(2)}</div>
             </div>
 
-            <Button className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 p-2 rounded-md transition hover:scale-105">
+            <Button
+              className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 p-2 rounded-md transition hover:scale-105"
+              onClick={() => handleAddToCart()}
+            >
               <ShoppingCart className="h-5 w-5" />
             </Button>
           </div>
@@ -127,7 +137,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="flex items-center justify-center min-h-screen bg-black/50 p-4">
           <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-[20px] p-6 w-full max-w-md">
             <img src={image} alt={name} className="w-full h-48 object-contain mb-4 rounded-lg" />
-
             <Dialog.Title className="text-xl font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
               {name}
             </Dialog.Title>
@@ -162,23 +171,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
             </div>
 
             <div className="mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
-              <span>الكمية:</span>
-              <button onClick={decreaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
-                -
-              </button>
+              <span>Quantity:</span>
+              <button onClick={decreaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">-</button>
               <span className="w-8 text-center">{quantity}</span>
-              <button onClick={increaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">
-                +
-              </button>
+              <button onClick={increaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">+</button>
             </div>
 
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setIsQuickSellOpen(false)}>
-                Close
-              </Button>
+              <Button variant="outline" onClick={() => setIsQuickSellOpen(false)}>Close</Button>
               <Button
                 className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
                 onClick={() => {
+                  handleAddToCart();
                   setIsQuickSellOpen(false);
                 }}
               >
