@@ -54,7 +54,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      {/* Overlay for sidebar */}
+      {/* Overlay */}
       {sidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-40 z-40"
@@ -90,36 +90,27 @@ const Header: React.FC = () => {
       <header className="bg-white dark:bg-gray-900 shadow-sm z-30 sticky top-0 w-full transition-colors duration-300">
         <div className="container mx-auto px-4">
 
-         {/* Top bar for desktop */}
-        <div className="hidden md:flex justify-between items-center px-4 py-1 bg-blue-50 dark:bg-gray-800 transition-colors duration-300 rounded-b-md">
-          {/* Left: Location */}
-        <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
-         <MapPin className="h-3 w-3 text-blue-600 dark:text-blue-400" />
-        <span className="ml-1">{getLocationText()}</span>
-        </div>
-
-  {/* Right: Language + Dark Mode */}
-  <div className="flex items-center gap-4 text-sm">
-    {/* Language Toggle */}
-    <div
-      onClick={toggleLanguage}
-      className="cursor-pointer text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white transition-all duration-300"
-    >
-      {getLanguageLabel()}
-    </div>
-
-    {/* Dark Mode Toggle */}
-    <button
-      onClick={() => setDarkMode(!darkMode)}
-      className="text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white transition-all duration-300"
-    >
-      {darkMode
-        ? language === "ar" ? "☀️ " : language === "he" ? "☀️ " : "☀️ "
-        : language === "ar" ? "🌙 " : language === "he" ? "🌙 " : "🌙 "}
-    </button>
-  </div>
-</div>
-
+          {/* Desktop Top Bar */}
+          <div className="hidden md:flex justify-between items-center px-4 py-1 bg-blue-50 dark:bg-gray-800 transition-colors duration-300 rounded-b-md">
+            <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+              <MapPin className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+              <span className="ml-1">{getLocationText()}</span>
+            </div>
+            <div className="flex items-center gap-4 text-sm">
+              <div
+                onClick={toggleLanguage}
+                className="cursor-pointer text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white transition-all duration-300"
+              >
+                {getLanguageLabel()}
+              </div>
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white transition-all duration-300"
+              >
+                {darkMode ? "☀️" : "🌙"}
+              </button>
+            </div>
+          </div>
 
           {/* Mobile Header */}
           <div className="flex items-center justify-between py-2 md:hidden">
@@ -141,6 +132,18 @@ const Header: React.FC = () => {
               </button>
               <button className="text-gray-700 hover:text-blue-600">
                 <Bell className="h-5 w-5" />
+              </button>
+              <button
+                onClick={toggleLanguage}
+                className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white"
+              >
+                {getLanguageLabel()}
+              </button>
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                className="text-gray-700 hover:text-blue-600 dark:text-blue-300 dark:hover:text-white"
+              >
+                {darkMode ? "☀️" : "🌙"}
               </button>
             </div>
           </div>
@@ -170,42 +173,41 @@ const Header: React.FC = () => {
             </div>
           )}
 
-          {/* Desktop Main Header */}
+          {/* Desktop Header */}
           <div className="hidden md:flex justify-between items-center py-4">
             <div className="flex items-center space-x-8">
-             <Link to="/" className="flex items-center text-2xl font-bold text-blue-600 hover:text-blue-700 gap-2">
-              <img src="/public/logo.svg" alt="Vristo Logo" className="w-8 h-8" />
-                    <span className="text-2xl font-bold text-black dark:text-gray-300">Vristo</span>
-
-            </Link>
+              <Link to="/" className="flex items-center text-2xl font-bold text-blue-600 hover:text-blue-700 gap-2">
+                <img src="/public/logo.svg" alt="Vristo Logo" className="w-8 h-8" />
+                <span className="text-2xl font-bold text-black dark:text-gray-300">Vristo</span>
+              </Link>
 
               <nav className="flex space-x-6 text-gray-500">
                 <Link to="/" className="hover:text-blue-600">Home</Link>
                 <Link to="/categories" className="hover:text-blue-600">Categories</Link>
                 <Link to="/favourite" className="hover:text-blue-600">Favourite</Link>
                 <Link to="/stores" className="hover:text-blue-600">Stores</Link>
-                  <Link to="/products" className="hover:text-blue-600">Products</Link> {/* ← الجديد */}
+                <Link to="/products" className="hover:text-blue-600">Products</Link>
               </nav>
             </div>
-            <div className="flex items-center space-x-4">
-              {/* Search */}
-            <div className={`relative flex items-center transition-all duration-300 ${searchOpen ? "w-64" : "w-10"}`}>
-               <button
-                 onClick={() => setSearchOpen(!searchOpen)}
-                className="absolute left-3 z-10 text-gray-500 hover:text-blue-600">
-                <Search className="h-6 w-6" />
-              </button>
 
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                className={`pl-10 pr-4 py-2 rounded-full bg-gray-100 text-sm outline-none w-full transition-opacity duration-300 ${
-                searchOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-                }`}
-              />
-            </div>
+            <div className="flex items-center space-x-4">
+              <div className={`relative flex items-center transition-all duration-300 ${searchOpen ? "w-64" : "w-10"}`}>
+                <button
+                  onClick={() => setSearchOpen(!searchOpen)}
+                  className="absolute left-3 z-10 text-gray-500 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+                >
+                  <Search className="h-6 w-6" />
+                </button>
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchText}
+                  onChange={(e) => setSearchText(e.target.value)}
+                  className={`pl-10 pr-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-sm outline-none w-full transition-opacity duration-300 ${
+                    searchOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+                  } text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400`}
+                />
+              </div>
 
               <Bell className="h-6 w-6 text-gray-500 hover:text-blue-600" />
               <Link to="/cart">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@headlessui/react";
 
@@ -74,9 +74,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <>
       <div
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm group cursor-pointer"
+        onClick={() => setIsQuickSellOpen(true)}
       >
         {discount && (
           <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded text-xs font-medium z-10">
@@ -90,8 +89,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
         <div className="p-4">
           <div
-            className="h-36 flex items-center justify-center mb-3 transition duration-300 cursor-pointer transform group-hover:scale-[1.08]"
-            onClick={() => setIsQuickSellOpen(true)}
+            className="h-36 flex items-center justify-center mb-3 transition duration-300 transform group-hover:scale-[1.08]"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
           >
             <img
               src={isHovered && hoverImage ? hoverImage : image}
@@ -112,17 +112,20 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <div>
               {originalPrice && (
                 <div className="text-gray-400 dark:text-gray-500 line-through text-sm">
-                  ${originalPrice.toFixed(2)}
+                  ${(originalPrice * quantity).toFixed(2)}
                 </div>
               )}
-              <div className="font-bold text-gray-900 dark:text-gray-100">${price.toFixed(2)}</div>
+              <div className="font-bold text-gray-900 dark:text-gray-100">${(price * quantity).toFixed(2)}</div>
             </div>
 
             <Button
-              className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 p-2 rounded-md transition hover:scale-105"
-              onClick={() => handleAddToCart()}
+              className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 w-8 h-8 p-0 rounded-md text-xl font-bold flex items-center justify-center"
+              onClick={(e) => {
+                e.stopPropagation(); // يمنع فتح المودال
+                handleAddToCart();
+              }}
             >
-              <ShoppingCart className="h-5 w-5" />
+              +
             </Button>
           </div>
         </div>
@@ -135,7 +138,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         className="fixed z-50 inset-0 overflow-y-auto"
       >
         <div className="flex items-center justify-center min-h-screen bg-black/50 p-4">
-          <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-[20px] p-6 w-full max-w-md">
+          <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-[20px] p-6 w-full max-w-md max-h-screen overflow-y-auto">
             <img src={image} alt={name} className="w-full h-48 object-contain mb-4 rounded-lg" />
             <Dialog.Title className="text-xl font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
               {name}
@@ -143,7 +146,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 
             <div className="flex justify-center items-center mb-2">
               {renderStars(rating)}
-              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({reviewCount} تقييم)</span>
+              <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({reviewCount} Evaluation)</span>
             </div>
 
             {description && (
@@ -151,9 +154,9 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
 
             {category && (
-              <div className="mb-3 text-sm text-gray-700 dark:text-gray-400">
-                <span className="text-gray-500 dark:text-gray-400">الفئة:</span>
-                <span className="ml-2 font-medium">{category}</span>
+              <div className="mb-3 text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Category:</span>
+                <span className="ml-2 font-medium text-gray-800 dark:text-gray-100">{category}</span>
               </div>
             )}
 
@@ -166,8 +169,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
             )}
 
             <div className="mb-4">
-              <div className="text-gray-500 dark:text-gray-400 text-sm">السعر:</div>
-              <div className="text-lg font-bold text-gray-900 dark:text-gray-100">${price.toFixed(2)}</div>
+              <div className="text-gray-500 dark:text-gray-400 text-sm">Price:</div>
+              {originalPrice && originalPrice > price && (
+                <div className="text-sm line-through text-gray-400">${originalPrice.toFixed(2)}</div>
+              )}
+              <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                ${(price * quantity).toFixed(2)}
+              </div>
             </div>
 
             <div className="mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">

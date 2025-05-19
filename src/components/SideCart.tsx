@@ -6,6 +6,7 @@ interface Product {
   name: string;
   image: string;
   price: number;
+  quantity: number; // أضفنا الكمية
 }
 
 interface SideCartProps {
@@ -13,6 +14,7 @@ interface SideCartProps {
   onClose: () => void;
   cartItems: Product[];
   onRemoveItem: (id: string) => void;
+  onUpdateQuantity: (id: string, quantity: number) => void; // دالة تعديل الكمية
 }
 
 const SideCart: React.FC<SideCartProps> = ({
@@ -20,8 +22,12 @@ const SideCart: React.FC<SideCartProps> = ({
   onClose,
   cartItems,
   onRemoveItem,
+  onUpdateQuantity,
 }) => {
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
   return (
     <div
@@ -57,8 +63,26 @@ const SideCart: React.FC<SideCartProps> = ({
                   {item.name}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
-                  ${item.price}
+                  ${item.price.toFixed(2)}
                 </p>
+                {/* تعديل الكمية */}
+                <div className="flex items-center space-x-2 mt-1">
+                  <button
+                    className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded"
+                    onClick={() =>
+                      onUpdateQuantity(item.id, Math.max(1, item.quantity - 1))
+                    }
+                  >
+                    –
+                  </button>
+                  <span className="text-sm dark:text-white">{item.quantity}</span>
+                  <button
+                    className="px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded"
+                    onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
               <button
                 onClick={() => onRemoveItem(item.id)}

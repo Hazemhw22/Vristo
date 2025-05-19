@@ -14,30 +14,36 @@ import SideCart from "@/components/SideCart"; // ✅ جديد
 import { Flame } from "lucide-react";
 
 const Index = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: "1",
-      name: "Burger Meal",
-      image: "/public/images/photo-1512152272829-e3139592d56f.jpg",
-      price: 12,
-    },
-    {
-      id: "2",
-      name: "Pizza Slice",
-      image: "/public/images/photo-1565299624946-b28f40a0ae38.jpg",
-      price: 8,
-    },
-  ]);
+  // تبدأ السلة فارغة
+  const [cartItems, setCartItems] = useState([]);
 
+  // إضافة منتج أو زيادة الكمية إذا موجود
   const onAddToCart = (product) => {
-    setCartItems((prev) => [...prev, product]);
+    setCartItems((prev) => {
+      const exist = prev.find((item) => item.id === product.id);
+      if (exist) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            : item
+        );
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+    });
   };
 
+  // حذف منتج مع تأكيد بسيط
   const handleRemoveFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    const confirmDelete = window.confirm(
+      "هل أنت متأكد من حذف هذا المنتج من السلة؟"
+    );
+    if (confirmDelete) {
+      setCartItems((prev) => prev.filter((item) => item.id !== id));
+    }
   };
 
-  const [showCart, setShowCart] = useState(false); // ✅ جديد
+  const [showCart, setShowCart] = useState(false); // التحكم في عرض السلة
   const [isMobile, setIsMobile] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
@@ -46,7 +52,7 @@ const Index = () => {
       setIsMobile(window.innerWidth < 768);
     };
 
-    handleResize();   
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     if (darkMode) {
@@ -60,6 +66,7 @@ const Index = () => {
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
+  // بيانات الأقسام مع تعديل مسارات الصور
   const [sections] = useState(() => [
     {
       type: "hero",
@@ -77,7 +84,7 @@ const Index = () => {
           .map((_, i) => ({
             id: `c${i + 1}`,
             name: `Category ${i + 1}`,
-            image: "/public/images/KFC_logo.svg.png",
+            image: "/images/KFC_logo.svg.png",
           })),
       },
     },
@@ -91,7 +98,7 @@ const Index = () => {
           .map((_, i) => ({
             id: `p${i + 1}`,
             name: `Product ${i + 1}`,
-            image: "/public/images/pngimg.com - iphone16_PNG35.png",
+            image: "/images/pngimg.com - iphone16_PNG35.png",
             price: 75 + i * 10,
             originalPrice: 100 + i * 10,
             discount: 25,
@@ -131,9 +138,7 @@ const Index = () => {
             id: `b${i + 1}`,
             name: `Brand ${i + 1}`,
             logo:
-              i % 2 === 0
-                ? "/public/images/chanel-1.jpg"
-                : "/public/images/Huawei-Logo.jpg",
+              i % 2 === 0 ? "/images/chanel-1.jpg" : "/images/Huawei-Logo.jpg",
           })),
       },
     },
@@ -143,7 +148,7 @@ const Index = () => {
         title: "When Words aren't Enough",
         subtitle: "Say It with Gifts!",
         image:
-          "/public/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png",
+          "/images/pngtree-portrait-of-pretty-girl-holding-gift-box-in-hands-png-image_13968885.png",
         buttonText: "Shop Now",
       },
     },
@@ -206,7 +211,10 @@ const Index = () => {
 
               return (
                 <div key={idx} className="w-full max-w-7xl">
-                  <SectionComponent {...section.props} onAddToCart={onAddToCart} />
+                  <SectionComponent
+                    {...section.props}
+                    onAddToCart={onAddToCart}
+                  />
                 </div>
               );
             }
@@ -218,7 +226,10 @@ const Index = () => {
       <Footer />
 
       {!isMobile && (
-        <FloatingButtons onCartClick={() => setShowCart(true)} />
+        <FloatingButtons
+          onCartClick={() => setShowCart(true)} // عرض السلة
+          cartCount={cartItems.reduce((acc, item) => acc + (item.quantity || 1), 0)} // مجموع الكميات
+        />
       )}
 
       <SideCart

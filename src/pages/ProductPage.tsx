@@ -200,9 +200,16 @@ const ProductPage = () => {
           </div>
         )}
 
-        {!isMobile && <FloatingButtons onCartClick={() => setIsCartOpen(true)} />}
+        {!isMobile && (
+            <FloatingButtons
+            onCartClick={() => setIsCartOpen(true)}
+            cartCount={cartItems.length}/>
+        )}
 
-        <MobileNavigation />
+            <MobileNavigation
+                onOrdersClick={() => setIsCartOpen(true)}
+                cartCount={cartItems.length}
+            />
       </main>
       <Footer />
     </div>
