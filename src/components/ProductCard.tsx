@@ -1,23 +1,24 @@
-import React, { useState } from "react";
-import { Heart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Dialog } from "@headlessui/react";
+import type React from "react"
+import { useState } from "react"
+import { Heart } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Dialog } from "@headlessui/react"
 
 interface ProductCardProps {
-  id: string;
-  name: string;
-  image: string;
-  price: number;
-  originalPrice?: number;
-  discount?: number;
-  rating: number;
-  store: string;
-  reviewCount: number;
-  hoverImage?: string;
-  category?: string;
-  description?: string;
-  features?: string[];
-  onAddToCart?: (product: { id: string; name: string; image: string; price: number; quantity: number }) => void;
+  id: string
+  name: string
+  image: string
+  price: number
+  originalPrice?: number
+  discount?: number
+  rating: number
+  store: string
+  reviewCount: number
+  hoverImage?: string
+  category?: string
+  description?: string
+  features?: string[]
+  onAddToCart?: (product: { id: string; name: string; image: string; price: number; quantity: number }) => void
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({
@@ -36,24 +37,39 @@ const ProductCard: React.FC<ProductCardProps> = ({
   features,
   onAddToCart,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isQuickSellOpen, setIsQuickSellOpen] = useState(false);
-  const [quantity, setQuantity] = useState(1);
+  const [isHovered, setIsHovered] = useState(false)
+  const [isQuickSellOpen, setIsQuickSellOpen] = useState(false)
+  const [quantity, setQuantity] = useState(1)
+  const [addedToCart, setAddedToCart] = useState(false)
 
-  const increaseQty = () => setQuantity((prev) => prev + 1);
-  const decreaseQty = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  const increaseQty = () => {
+    setQuantity((prev) => prev + 1)
+    setTimeout(() => handleAddToCart(), 0)
+  }
+
+  const decreaseQty = () => {
+    setQuantity((prev) => {
+      const newQty = prev > 1 ? prev - 1 : 1
+      if (newQty !== prev) {
+        setTimeout(() => handleAddToCart(), 0)
+      }
+      return newQty
+    })
+  }
 
   const handleAddToCart = () => {
     if (onAddToCart) {
-      onAddToCart({ id, name, image, price, quantity });
+      onAddToCart({ id, name, image, price, quantity })
+      setAddedToCart(true)
+      setTimeout(() => setAddedToCart(false), 1500)
     }
-  };
+  }
 
   const renderStars = (rating: number) => {
     return Array(5)
       .fill(0)
       .map((_, index) => {
-        const fillPercent = Math.min(Math.max(rating - index, 0), 1);
+        const fillPercent = Math.min(Math.max(rating - index, 0), 1)
         return (
           <svg key={index} className="w-4 h-4" viewBox="0 0 24 24" fill="none">
             <defs>
@@ -67,14 +83,14 @@ const ProductCard: React.FC<ProductCardProps> = ({
               d="M12 2l2.9 6h6.1l-4.9 4.2L18.9 20 12 15.8 5.1 20l2.8-7.8L3 8h6.1L12 2z"
             />
           </svg>
-        );
-      });
-  };
+        )
+      })
+  }
 
   return (
     <>
       <div
-        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm group cursor-pointer"
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-lg relative w-full max-w-sm group cursor-pointer transition-all duration-300 hover:shadow-xl"
         onClick={() => setIsQuickSellOpen(true)}
       >
         {discount && (
@@ -118,15 +134,18 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <div className="font-bold text-gray-900 dark:text-gray-100">${(price * quantity).toFixed(2)}</div>
             </div>
 
-            <Button
-              className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 w-8 h-8 p-0 rounded-md text-xl font-bold flex items-center justify-center"
-              onClick={(e) => {
-                e.stopPropagation(); // يمنع فتح المودال
-                handleAddToCart();
-              }}
-            >
-              +
-            </Button>
+            <div className="flex items-center gap-2">
+              {addedToCart && <span className="text-xs text-green-500 animate-fade-in-out">Added!</span>}
+              <Button
+                className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 w-9 h-9 p-0 rounded-md text-xl font-bold flex items-center justify-center transition-transform hover:scale-105"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleAddToCart()
+                }}
+              >
+                +
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -139,7 +158,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
       >
         <div className="flex items-center justify-center min-h-screen bg-black/50 p-4">
           <Dialog.Panel className="bg-white dark:bg-gray-800 rounded-[20px] p-6 w-full max-w-md max-h-screen overflow-y-auto">
-            <img src={image} alt={name} className="w-full h-48 object-contain mb-4 rounded-lg" />
+            <img src={image || "/placeholder.svg"} alt={name} className="w-full h-48 object-contain mb-4 rounded-lg" />
             <Dialog.Title className="text-xl font-semibold mb-2 text-center text-gray-900 dark:text-gray-100">
               {name}
             </Dialog.Title>
@@ -149,9 +168,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               <span className="ml-2 text-sm text-gray-500 dark:text-gray-400">({reviewCount} Evaluation)</span>
             </div>
 
-            {description && (
-              <p className="text-center text-gray-600 dark:text-gray-300 text-sm mb-4">{description}</p>
-            )}
+            {description && <p className="text-center text-gray-600 dark:text-gray-300 text-sm mb-4">{description}</p>}
 
             {category && (
               <div className="mb-3 text-sm">
@@ -173,25 +190,47 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {originalPrice && originalPrice > price && (
                 <div className="text-sm line-through text-gray-400">${originalPrice.toFixed(2)}</div>
               )}
-              <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                ${(price * quantity).toFixed(2)}
-              </div>
+              <div className="text-lg font-bold text-gray-900 dark:text-gray-100">${(price * quantity).toFixed(2)}</div>
             </div>
 
             <div className="mb-4 flex items-center gap-3 text-gray-900 dark:text-gray-100">
-              <span>Quantity:</span>
-              <button onClick={decreaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">-</button>
-              <span className="w-8 text-center">{quantity}</span>
-              <button onClick={increaseQty} className="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">+</button>
+              <span className="text-sm font-medium">Quantity:</span>
+              <div className="flex items-center border rounded-md overflow-hidden">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    decreaseQty()
+                  }}
+                  className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1.5 transition-colors"
+                >
+                  -
+                </button>
+                <span className="w-10 text-center py-1.5 border-x">{quantity}</span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    increaseQty()
+                  }}
+                  className="bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 px-3 py-1.5 transition-colors"
+                >
+                  +
+                </button>
+              </div>
             </div>
 
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setIsQuickSellOpen(false)}>Close</Button>
+            <div className="flex justify-between gap-3 mt-6">
               <Button
-                className="bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+                variant="outline"
+                className="flex-1 border-gray-300 hover:bg-gray-100 dark:border-gray-600 dark:hover:bg-gray-700"
+                onClick={() => setIsQuickSellOpen(false)}
+              >
+                Close
+              </Button>
+              <Button
+                className="flex-1 bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
                 onClick={() => {
-                  handleAddToCart();
-                  setIsQuickSellOpen(false);
+                  handleAddToCart()
+                  setIsQuickSellOpen(false)
                 }}
               >
                 Add To Cart
@@ -201,7 +240,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
       </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default ProductCard;
+export default ProductCard

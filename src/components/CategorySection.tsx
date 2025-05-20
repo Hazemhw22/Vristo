@@ -37,7 +37,7 @@ const CategorySection: React.FC<CategorySectionProps> = ({ categories }) => {
           <div
             {...swipeHandlers}
             ref={scrollRef}
-            className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-8 lg:grid-cols-8 gap-8"
+            className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-8 lg:grid-cols-8 gap-6"
           >
             {categories.map((category) => (
               <div

@@ -12,11 +12,11 @@ interface RecommendedStoresProps {
 
 const RecommendedStores: React.FC<RecommendedStoresProps> = ({ stores }) => {
   return (
-    <div className="mb-10 ">
+    <div className="mb-10">
       <h3 className="text-xl font-bold mb-6">Recommended Stores!</h3>
 
       <div className="flex justify-center">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-8 lg:grid-cols-8 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-8 lg:grid-cols-8 gap-12">
           {stores.map((store) => (
             <div
               key={store.id}

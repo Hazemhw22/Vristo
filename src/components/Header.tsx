@@ -11,12 +11,25 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const flags: Record<string, string> = {
+  en: "https://img.icons8.com/emoji/48/united-states-emoji.png",  // علم أمريكا
+  he: "https://img.icons8.com/emoji/48/israel-emoji.png",        // علم إسرائيل كما هو
+  ar: "https://img.icons8.com/emoji/48/united-arab-emirates-emoji.png",  // علم الإمارات بدل فلسطين
+};
+
 const Header: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [language, setLanguage] = useState("en");
-  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState(() => {
+    const saved = localStorage.getItem("language");
+    return saved || "en";
+  });
+  const [darkMode, setDarkMode] = useState(() => {
+    const saved = localStorage.getItem("darkMode");
+    return saved === "true";
+  });
+  const [showLangMenu, setShowLangMenu] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -24,10 +37,16 @@ const Header: React.FC = () => {
     } else {
       document.documentElement.classList.remove("dark");
     }
+    localStorage.setItem("darkMode", String(darkMode));
   }, [darkMode]);
 
-  const toggleLanguage = () => {
-    setLanguage((prev) => (prev === "en" ? "he" : prev === "he" ? "ar" : "en"));
+  useEffect(() => {
+    localStorage.setItem("language", language);
+  }, [language]);
+
+  const changeLanguage = (lang: string) => {
+    setLanguage(lang);
+    setShowLangMenu(false);
   };
 
   const getLocationText = () => {
@@ -38,17 +57,6 @@ const Header: React.FC = () => {
         return "ערד, ישראל";
       default:
         return "Arad, Israel";
-    }
-  };
-
-  const getLanguageLabel = () => {
-    switch (language) {
-      case "ar":
-        return "AR";
-      case "he":
-        return "HE";
-      default:
-        return "EN";
     }
   };
 
@@ -89,20 +97,46 @@ const Header: React.FC = () => {
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 shadow-sm z-30 sticky top-0 w-full transition-colors duration-300">
         <div className="container mx-auto px-4">
-
+          
           {/* Desktop Top Bar */}
           <div className="hidden md:flex justify-between items-center px-4 py-1 bg-blue-50 dark:bg-gray-800 transition-colors duration-300 rounded-b-md">
             <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
               <MapPin className="h-3 w-3 text-blue-600 dark:text-blue-400" />
               <span className="ml-1">{getLocationText()}</span>
             </div>
-            <div className="flex items-center gap-4 text-sm">
-              <div
-                onClick={toggleLanguage}
-                className="cursor-pointer text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white transition-all duration-300"
-              >
-                {getLanguageLabel()}
+            <div className="flex items-center gap-4 text-sm relative">
+              <div className="relative">
+                <button
+                  onClick={() => setShowLangMenu(!showLangMenu)}
+                  className="flex items-center gap-1 focus:outline-none"
+                >
+                  <img
+                    src={flags[language]}
+                    alt={language}
+                    className="w-6 h-6 rounded-full border-2 border-blue-500"
+                  />
+                  <ChevronDown className="w-4 h-4 text-blue-600" />
+                </button>
+                {showLangMenu && (
+                  <div className="absolute right-0 mt-2 w-28 bg-white dark:bg-gray-800 shadow rounded z-50">
+                    {["en", "he", "ar"].map((lang) => (
+                      <button
+                        key={lang}
+                        onClick={() => changeLanguage(lang)}
+                        className="flex items-center gap-2 px-3 py-2 hover:bg-blue-50 dark:hover:bg-gray-700 w-full"
+                      >
+                        <img
+                          src={flags[lang]}
+                          alt={lang}
+                          className="w-5 h-5 rounded-full"
+                        />
+                        <span className="text-sm text-gray-700 dark:text-gray-200">{lang.toUpperCase()}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
+
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className="text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white transition-all duration-300"
@@ -133,12 +167,12 @@ const Header: React.FC = () => {
               <button className="text-gray-700 hover:text-blue-600">
                 <Bell className="h-5 w-5" />
               </button>
-              <button
-                onClick={toggleLanguage}
-                className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-300 dark:hover:text-white"
-              >
-                {getLanguageLabel()}
-              </button>
+              <img
+                src={flags[language]}
+                alt={language}
+                onClick={() => setShowLangMenu(!showLangMenu)}
+                className="w-6 h-6 rounded-full border-2 border-blue-500 cursor-pointer"
+              />
               <button
                 onClick={() => setDarkMode(!darkMode)}
                 className="text-gray-700 hover:text-blue-600 dark:text-blue-300 dark:hover:text-white"
@@ -194,7 +228,7 @@ const Header: React.FC = () => {
               <div className={`relative flex items-center transition-all duration-300 ${searchOpen ? "w-64" : "w-10"}`}>
                 <button
                   onClick={() => setSearchOpen(!searchOpen)}
-                  className="absolute left-3 z-10 text-gray-500 hover:text-blue-600 dark:text-gray-300 dark:hover:text-blue-400"
+                  className="absolute left-3 z-10 text-gray-500 hover:text-blue-600 dark:text-gray-500 dark:hover:text-blue-400"
                 >
                   <Search className="h-6 w-6" />
                 </button>
